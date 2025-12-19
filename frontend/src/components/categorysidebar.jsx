@@ -40,7 +40,7 @@ const CategorySidebar = ({ isOpen, setIsOpen }) => {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-bold" style={{ fontFamily: 'Roboto Slab, serif' }}>
-            Outfitters
+            AnayaBloom
           </h2>
           <button 
             onClick={() => setIsOpen(false)}
