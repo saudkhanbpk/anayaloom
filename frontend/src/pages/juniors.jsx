@@ -130,12 +130,12 @@ export default function JuniorsProducts() {
         {products.map((product) => (
           <div
             key={product.id}
-            className="border rounded-lg bg-white shadow-sm"
+            className="border rounded-lg bg-gray-300 shadow-sm"
           >
             <img
               src={product.images?.[0]?.src}
               alt={product.title}
-              className="h-64 w-full object-cover"
+              className="h-64 w-full object-contain"
             />
 
             <div className="p-4">

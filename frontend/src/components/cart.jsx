@@ -261,7 +261,9 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
                 <span>PKR {getSubtotal()}</span>
               </div>
 
-              <button className="w-full bg-black text-white py-3">
+              <button onClick={()=>{
+                window.location.href="/checkout"
+              }} className="w-full bg-black text-white py-3">
                 Checkout
               </button>
             </div>
