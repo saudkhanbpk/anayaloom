@@ -162,18 +162,18 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
       {/* Sidebar */}
       <div
         className={`fixed top-0 right-0 
-        h-screen                     /* 🔴 CHANGED from h-full */
+        h-screen                     
         w-full sm:w-96 
         bg-white z-50 shadow-2xl
         transform transition-transform duration-300
-        flex flex-col                /* 🔴 ADDED */
+        flex flex-col               
         ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b shrink-0">
-          {/* 🔴 shrink-0 ADDED */}
+      
           <h2 className="text-xl font-semibold">Your Cart</h2>
           <button onClick={() => setIsOpen(false)}>
             <X size={24} />
@@ -183,7 +183,6 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
         {/* Empty Cart */}
         {cartItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center flex-1">
-            {/* 🔴 h-full → flex-1 */}
             <h3 className="text-xl mb-6">Your cart is empty</h3>
             <button
               onClick={() => setIsOpen(false)}
@@ -256,7 +255,7 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
 
             {/* Footer */}
             <div className="p-6 border-t shrink-0 bg-white">
-              {/* 🔴 shrink-0 ADDED */}
+            
               <div className="flex justify-between mb-4 font-semibold">
                 <span>Subtotal</span>
                 <span>PKR {getSubtotal()}</span>
