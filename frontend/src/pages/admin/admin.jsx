@@ -17,6 +17,7 @@ import {
   Upload,
   Save
 } from 'lucide-react';
+import AddCategory from '../../components/admin/category';
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -331,63 +332,65 @@ export default function AdminDashboard() {
   );
 
   // Add Category Component
-  const AddCategory = () => (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Add New Category</h2>
+  // const AddCategory = () => (
+  //   <div className="space-y-6">
+  //     <h2 className="text-2xl font-bold">Add New Category</h2>
       
-      <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category Name *</label>
-            <input
-              type="text"
-              placeholder="Enter category name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+  //     <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl">
+  //       <div className="space-y-4">
+  //         <div>
+  //           <label className="block text-sm font-medium text-gray-700 mb-1">Category Name *</label>
+  //           <input
+  //             type="text"
+  //             placeholder="Enter category name"
+  //             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  //           />
+  //         </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-            <input
-              type="text"
-              placeholder="category-slug"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+  //         <div>
+  //           <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+  //           <input
+  //             type="text"
+  //             placeholder="category-slug"
+  //             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  //           />
+  //         </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea
-              rows="4"
-              placeholder="Enter category description"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            />
-          </div>
+  //         <div>
+  //           <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+  //           <textarea
+  //             rows="4"
+  //             placeholder="Enter category description"
+  //             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+  //           />
+  //         </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
+  //         <div>
+  //           <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+  //           <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+  //             <option value="active">Active</option>
+  //             <option value="inactive">Inactive</option>
+  //           </select>
+  //         </div>
 
-          <div className="flex gap-4 pt-4">
-            <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
-              <Save className="w-5 h-5" />
-              Save Category
-            </button>
-            <button 
-              onClick={() => setCurrentPage('categories')}
-              className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  //         <div className="flex gap-4 pt-4">
+  //           <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
+  //             <Save className="w-5 h-5" />
+  //             Save Category
+  //           </button>
+  //           <button 
+  //             onClick={() => setCurrentPage('categories')}
+  //             className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
+  //           >
+  //             Cancel
+  //           </button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
+
+  <AddCategory />
 
   // Orders Component
   const Orders = () => (

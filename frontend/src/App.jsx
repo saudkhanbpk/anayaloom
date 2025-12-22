@@ -56,6 +56,8 @@ import WomenProducts from './pages/Women';
 import JuniorsProducts from './pages/juniors';
 import CheckoutPage from './pages/checkout';
 import AdminDashboard from './pages/admin/admin';
+import OTPVerification from './pages/otp';
+import ForgotPassword from './pages/forgetpassword';
 
 function AppContent() {
   const location = useLocation();
@@ -73,6 +75,8 @@ function AppContent() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/create-account' element={<CreateAccount />} />
+          <Route path='/verify-otp' element={<OTPVerification />} />
+          <Route path='/forget-password' element={<ForgotPassword />} />
           <Route path='/men' element={<MenProducts />} />
           <Route path='/women' element={<WomenProducts />} />
           <Route path='/juniors' element={<JuniorsProducts />} />
