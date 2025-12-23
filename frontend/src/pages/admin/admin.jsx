@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  Package, 
-  FolderTree, 
-  ShoppingCart, 
-  Users, 
+import {
+  LayoutDashboard,
+  Package,
+  FolderTree,
+  ShoppingCart,
+  Users,
   Settings,
   LogOut,
   Menu,
@@ -17,7 +17,8 @@ import {
   Upload,
   Save
 } from 'lucide-react';
-import AddCategory from '../../components/admin/category';
+import AddCategory from '../../components/admin/Addcategory';
+import Categories from '../../components/admin/categroy';
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -56,7 +57,7 @@ export default function AdminDashboard() {
   const Dashboard = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Dashboard Overview</h2>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-blue-500 text-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-start">
@@ -67,7 +68,7 @@ export default function AdminDashboard() {
             <Package className="w-10 h-10 opacity-80" />
           </div>
         </div>
-        
+
         <div className="bg-green-500 text-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-start">
             <div>
@@ -77,7 +78,7 @@ export default function AdminDashboard() {
             <ShoppingCart className="w-10 h-10 opacity-80" />
           </div>
         </div>
-        
+
         <div className="bg-purple-500 text-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-start">
             <div>
@@ -87,7 +88,7 @@ export default function AdminDashboard() {
             <Users className="w-10 h-10 opacity-80" />
           </div>
         </div>
-        
+
         <div className="bg-orange-500 text-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between items-start">
             <div>
@@ -118,11 +119,10 @@ export default function AdminDashboard() {
                   <td className="px-4 py-3 text-sm">{order.customer}</td>
                   <td className="px-4 py-3 text-sm">PKR {order.total}</td>
                   <td className="px-4 py-3">
-                    <span className={`px-3 py-1 text-xs rounded-full ${
-                      order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                      order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
-                      'bg-yellow-100 text-yellow-700'
-                    }`}>
+                    <span className={`px-3 py-1 text-xs rounded-full ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                        order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
+                          'bg-yellow-100 text-yellow-700'
+                      }`}>
                       {order.status}
                     </span>
                   </td>
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Products</h2>
-        <button 
+        <button
           onClick={() => setCurrentPage('add-product')}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
   const AddProduct = () => (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Add New Product</h2>
-      
+
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="space-y-4">
           <div>
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
               <Save className="w-5 h-5" />
               Save Product
             </button>
-            <button 
+            <button
               onClick={() => setCurrentPage('products')}
               className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
@@ -291,106 +291,8 @@ export default function AdminDashboard() {
     </div>
   );
 
-  // Categories Component
-  const Categories = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Categories</h2>
-        <button 
-          onClick={() => setCurrentPage('add-category')}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Add Category
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map(category => (
-          <div key={category.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-lg font-semibold">{category.name}</h3>
-                <p className="text-sm text-gray-600 mt-1">{category.products} products</p>
-              </div>
-              <span className="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                {category.status}
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <button className="flex-1 px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">
-                Edit
-              </button>
-              <button className="px-4 py-2 text-sm text-red-600 border border-red-600 rounded-lg hover:bg-red-50">
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  // Add Category Component
-  // const AddCategory = () => (
-  //   <div className="space-y-6">
-  //     <h2 className="text-2xl font-bold">Add New Category</h2>
-      
-  //     <div className="bg-white p-6 rounded-lg shadow-md max-w-2xl">
-  //       <div className="space-y-4">
-  //         <div>
-  //           <label className="block text-sm font-medium text-gray-700 mb-1">Category Name *</label>
-  //           <input
-  //             type="text"
-  //             placeholder="Enter category name"
-  //             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-  //           />
-  //         </div>
-
-  //         <div>
-  //           <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-  //           <input
-  //             type="text"
-  //             placeholder="category-slug"
-  //             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-  //           />
-  //         </div>
-
-  //         <div>
-  //           <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-  //           <textarea
-  //             rows="4"
-  //             placeholder="Enter category description"
-  //             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-  //           />
-  //         </div>
-
-  //         <div>
-  //           <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-  //           <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-  //             <option value="active">Active</option>
-  //             <option value="inactive">Inactive</option>
-  //           </select>
-  //         </div>
-
-  //         <div className="flex gap-4 pt-4">
-  //           <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
-  //             <Save className="w-5 h-5" />
-  //             Save Category
-  //           </button>
-  //           <button 
-  //             onClick={() => setCurrentPage('categories')}
-  //             className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
-  //           >
-  //             Cancel
-  //           </button>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-
-  <AddCategory />
+  <Categories />;
+  <AddCategory />;
 
   // Orders Component
   const Orders = () => (
@@ -435,11 +337,10 @@ export default function AdminDashboard() {
                   <td className="px-4 py-3 text-sm text-gray-600">{order.date}</td>
                   <td className="px-4 py-3 text-sm font-medium">PKR {order.total}</td>
                   <td className="px-4 py-3">
-                    <span className={`px-3 py-1 text-xs rounded-full ${
-                      order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                      order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
-                      'bg-yellow-100 text-yellow-700'
-                    }`}>
+                    <span className={`px-3 py-1 text-xs rounded-full ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                        order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
+                          'bg-yellow-100 text-yellow-700'
+                      }`}>
                       {order.status}
                     </span>
                   </td>
@@ -464,12 +365,17 @@ export default function AdminDashboard() {
 
   // Render current page
   const renderPage = () => {
-    switch(currentPage) {
+    switch (currentPage) {
       case 'dashboard': return <Dashboard />;
       case 'products': return <Products />;
       case 'add-product': return <AddProduct />;
-      case 'categories': return <Categories />;
-      case 'add-category': return <AddCategory />;
+      // case 'categories': return <Categories />;
+       case 'categories': 
+      return <Categories setCurrentPage={setCurrentPage} />; 
+      // case 'add-category': return <AddCategory />;
+      case 'add-category':
+      case 'edit-category':
+        return <AddCategory setCurrentPage={setCurrentPage} />;
       case 'orders': return <Orders />;
       case 'customers': return <div className="text-xl">Customers Page (Coming Soon)</div>;
       case 'settings': return <div className="text-xl">Settings Page (Coming Soon)</div>;
@@ -485,7 +391,7 @@ export default function AdminDashboard() {
         <div className="p-4 border-b border-gray-800">
           <div className="flex items-center justify-between">
             {sidebarOpen && <h1 className="text-xl font-bold">Admin Panel</h1>}
-            <button 
+            <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="p-2 hover:bg-gray-800 rounded-lg"
             >
@@ -502,11 +408,10 @@ export default function AdminDashboard() {
               <button
                 key={item.id}
                 onClick={() => setCurrentPage(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                  currentPage === item.id 
-                    ? 'bg-blue-600 text-white' 
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${currentPage === item.id
+                    ? 'bg-blue-600 text-white'
                     : 'text-gray-300 hover:bg-gray-800'
-                }`}
+                  }`}
               >
                 <Icon className="w-5 h-5 shrink-0" />
                 {sidebarOpen && <span className="text-sm font-medium">{item.name}</span>}

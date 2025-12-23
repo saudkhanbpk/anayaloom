@@ -66,14 +66,7 @@ const Navbar = () => {
                                 <User size={20} className="md:w-6 md:h-6" />
                             </button>
 
-                            {/* Cart Icon */}
-                            {/* <button
-                                onClick={() => window.location.href = '/handbag'}
-                                className="text-white hover:text-gray-300 transition-colors relative cursor-pointer bg-transparent border-0"
-                                aria-label="Shopping bag"
-                            >
-                                <ShoppingBag size={20} className="md:w-6 md:h-6" />
-                            </button> */}
+                            
 
 
                             <button
@@ -105,13 +98,13 @@ const Navbar = () => {
             {/* Second Line - Navigation Links */}
             <div className="bg-brown-900" style={{ backgroundColor: '#3d2817' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-                    <div className="flex items-center justify-center gap-8 md:gap-12 h-12 md:h-14">
-                        <button
+                    <div className="flex items-center justify-center gap-16 md:gap-20 h-12 md:h-14">
+                        {/* <button
                             onClick={() => window.location.href = '/men'}
                             className="text-sm md:text-base font-semibold text-white hover:text-gray-300 transition-colors uppercase tracking-wide cursor-pointer bg-transparent border-0"
                         >
                             MEN
-                        </button>
+                        </button> */}
                         <button
                             onClick={() => window.location.href = '/women'}
                             className="text-sm md:text-base font-semibold text-white hover:text-gray-300 transition-colors uppercase tracking-wide cursor-pointer bg-transparent border-0"

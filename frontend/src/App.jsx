@@ -32,7 +32,7 @@ function AppContent() {
           <Route path='/create-account' element={<CreateAccount />} />
           <Route path='/verify-otp' element={<OTPVerification />} />
           <Route path='/forget-password' element={<ForgotPassword />} />
-          <Route path='/men' element={<MenProducts />} />
+          {/* <Route path='/men' element={<MenProducts />} /> */}
           <Route path='/women' element={<WomenProducts />} />
           <Route path='/juniors' element={<JuniorsProducts />} />
           <Route path='/checkout' element={<CheckoutPage />} />
