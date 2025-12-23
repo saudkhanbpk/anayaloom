@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 1: Enter email, 2: Enter OTP, 3: Reset password
+  const [step, setStep] = useState(1); 
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [newPassword, setNewPassword] = useState('');
@@ -12,11 +13,11 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [timer, setTimer] = useState(900); // 15 minutes in seconds
+  const [timer, setTimer] = useState(900); 
   const [canResend, setCanResend] = useState(false);
   const [resetToken, setResetToken] = useState('');
 
-  const API_BASE_URL =  'http://localhost:5000/api';
+  const API_BASE_URL =  import.meta.env.VITE_API_URL;
 
   // Timer countdown
   React.useEffect(() => {
@@ -189,7 +190,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
         
         {/* Logo/Header */}
