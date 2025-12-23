@@ -3,6 +3,9 @@ import bcrypt from "bcryptjs";
 import generateOTP from "../utilities/otp.js";
 import sendOTPEmail from "../config/mailer.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+
+
 
 export const loginUser = async (req, res) => {
   try {
@@ -146,3 +149,132 @@ export const resendOTP = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    const otp = generateOTP();
+
+    user.resetOTP = otp;
+    user.resetOTPExpiry = Date.now() + 15 * 60 * 1000; // 15 minutes
+    await user.save();
+
+    await sendOTPEmail(email, otp);
+
+    res.status(200).json({
+      message: "Password reset OTP sent to your email"
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+export const verifyResetOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    if (
+      user.resetOTP !== otp ||
+      user.resetOTPExpiry < Date.now()
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    // Create secure reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    user.resetToken = resetToken;
+    user.resetOTP = null;
+    user.resetOTPExpiry = null;
+    await user.save();
+
+    res.status(200).json({
+      message: "OTP verified successfully",
+      resetToken
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, email, newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword)
+      return res.status(400).json({ message: "Passwords do not match" });
+
+    const user = await User.findOne({
+      email,
+      resetToken: token
+    });
+
+    if (!user)
+      return res.status(400).json({ message: "Invalid or expired reset token" });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    user.resetToken = null;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password reset successful"
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+export const resendResetOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "User not found" });
+
+    const otp = generateOTP();
+
+    user.resetOTP = otp;
+    user.resetOTPExpiry = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    await sendOTPEmail(email, otp);
+
+    res.status(200).json({
+      message: "New reset OTP sent to your email"
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
