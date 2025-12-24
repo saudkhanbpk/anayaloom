@@ -110,14 +110,14 @@ const Navbar = () => {
                             className="text-sm md:text-base font-semibold text-white hover:text-gray-300 transition-colors uppercase tracking-wide cursor-pointer bg-transparent border-0"
                             style={{ fontFamily: 'Roboto Slab, serif' }}
                         >
-                            WOMEN
+                           Dupatta Gallery
                         </button>
                         <button
                             onClick={() => window.location.href = '/juniors'}
                             className="text-sm md:text-base font-semibold text-white hover:text-gray-300 transition-colors uppercase tracking-wide cursor-pointer bg-transparent border-0"
                             style={{ fontFamily: 'Roboto Slab, serif' }}
                         >
-                            JUNIORS
+                            Kids Corner
                         </button>
                     </div>
                 </div>
