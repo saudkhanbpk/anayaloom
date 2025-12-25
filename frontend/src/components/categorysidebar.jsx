@@ -1,25 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CategorySidebar = ({ isOpen, setIsOpen }) => {
-  const categories = [
-    'NEW IN',
-    'ENCORE',
-    'IN LAYERS',
-    'GOING OUT',
-    'OTR LAB',
-    'WINTER FALL\'25',
-    'SWEATSHIRTS | HOODIES',
-    'SWEATERS',
-    'OUTERWEAR',
-    'SHIRTS | SHACKETS',
-    'T-SHIRTS',
-    'POLOS',
-    'TROUSERS',
-    'ACTIVEWEAR',
-    'JEANS',
-    'SHORTS'
-  ];
+
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
+
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/categories`);
+
+        // ✅ ONLY parent categories
+        const parentCategories = res.data.filter(
+          category => category.parent === null
+        );
+
+        setCategories(parentCategories);
+      } catch (error) {
+        console.error("Error fetching categories", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+
+  // const categories = [
+  //   'NEW IN',
+  //   'ENCORE',
+  //   'IN LAYERS',
+  //   'GOING OUT',
+  //   'OTR LAB',
+  //   'WINTER FALL\'25',
+  //   'SWEATSHIRTS | HOODIES',
+  //   'SWEATERS',
+  //   'OUTERWEAR',
+  //   'SHIRTS | SHACKETS',
+  //   'T-SHIRTS',
+  //   'POLOS',
+  //   'TROUSERS',
+  //   'ACTIVEWEAR',
+  //   'JEANS',
+  //   'SHORTS'
+  // ];
 
   return (
     <>
@@ -33,16 +61,15 @@ const CategorySidebar = ({ isOpen, setIsOpen }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-white z-50 shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-bold" style={{ fontFamily: 'Roboto Slab, serif' }}>
             AnayaBloom
           </h2>
-          <button 
+          <button
             onClick={() => setIsOpen(false)}
             className="p-1 hover:bg-gray-100 rounded-full transition-colors"
           >
@@ -52,27 +79,6 @@ const CategorySidebar = ({ isOpen, setIsOpen }) => {
 
         {/* Categories Section */}
         <div className="overflow-y-auto h-full">
-          {/* New Collections */}
-          <div className="p-6 border-b">
-            <div className="mb-4">
-              <h3 className="font-bold text-lg mb-2">NEW IN</h3>
-              <div className="space-y-1">
-                {categories.slice(0, 6).map((category, index) => (
-                  <button
-                    key={index}
-                    className="block w-full text-left py-2 px-3 hover:bg-gray-50 rounded transition-colors"
-                    onClick={() => {
-                      console.log('Selected:', category);
-                      // Handle category selection
-                      setIsOpen(false);
-                    }}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
 
           {/* Shop by Categories */}
           <div className="p-6 border-b">
@@ -82,7 +88,7 @@ const CategorySidebar = ({ isOpen, setIsOpen }) => {
                 VIEW ALL
               </button>
             </div>
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               {categories.slice(6).map((category, index) => (
                 <button
                   key={index}
@@ -96,23 +102,23 @@ const CategorySidebar = ({ isOpen, setIsOpen }) => {
                   {category}
                 </button>
               ))}
+            </div> */}
+            <div className="space-y-1">
+              {categories.map(category => (
+                <button
+                  key={category._id}
+                  className="block w-full text-left py-2 px-3 hover:bg-gray-50 rounded transition-colors"
+                  onClick={() => {
+                    navigate(`/collection/${category._id}`);
+                    setIsOpen(false);
+                  }}
+                >
+                  {category.name}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Featured Sections */}
-          <div className="p-6">
-            <h3 className="font-bold text-lg mb-4">FEATURED</h3>
-            <div className="space-y-4">
-              <button className="block w-full text-left p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
-                <div className="font-semibold text-gray-800">ENCORE</div>
-                <div className="text-sm text-gray-500 mt-1">Shop the collection</div>
-              </button>
-              <button className="block w-full text-left p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
-                <div className="font-semibold text-gray-800">IN LAYERS</div>
-                <div className="text-sm text-gray-500 mt-1">Layered essentials</div>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </>

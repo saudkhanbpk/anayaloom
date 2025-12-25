@@ -139,6 +139,7 @@ import {
 
 const CartSidebar = ({ isOpen, setIsOpen }) => {
   const cartItems = useSelector((state) => state.cart.items);
+  console.log(cartItems ,"this is cart items");
   const dispatch = useDispatch();
 
   const getSubtotal = () =>
@@ -213,7 +214,6 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
                   <div className="flex-1 min-w-0">
                     {/* 🔴 min-w-0 ADDED (prevents horizontal overflow) */}
                     <p className="font-medium truncate">
-                      {/* 🔴 truncate ADDED */}
                       {item.title}
                     </p>
                     <p>PKR {item.price}</p>

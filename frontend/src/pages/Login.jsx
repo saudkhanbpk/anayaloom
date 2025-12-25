@@ -18,16 +18,19 @@ const LoginPage = () => {
         ${API_BASE_URL}/auth/login`,
         { email, password }
       );
-      //  const response = await axios.post(`${API_BASE_URL}/auth/forgot-password`, {
-      //         email
-      //       });
+      
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role",res.data.role);
       
       alert("Login successful");
-     
-      
+
+       if (res.data.role === 'admin') {
+      navigate('/admin');
+    } else {
       navigate(redirectTo);
+    } 
+      // navigate(redirectTo);
 
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
