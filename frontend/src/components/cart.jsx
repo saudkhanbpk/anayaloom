@@ -128,7 +128,6 @@
 
 
 
-import React from "react";
 import { X, Trash2 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -136,11 +135,15 @@ import {
   incrementQuantity,
   decrementQuantity,
 } from "../redux/cartslice";
+import { useState } from "react";
+import CategorySidebar from './categorysidebar.jsx';
+
 
 const CartSidebar = ({ isOpen, setIsOpen }) => {
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
-  console.log(cartItems ,"this is cart items");
   const dispatch = useDispatch();
+
 
   const getSubtotal = () =>
     cartItems
@@ -152,6 +155,12 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
+
+     <CategorySidebar
+        isOpen={isCategoryOpen}
+        setIsOpen={setIsCategoryOpen}
+      />
+
       {/* Backdrop */}
       {isOpen && (
         <div
@@ -168,13 +177,12 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
         bg-white z-50 shadow-2xl
         transform transition-transform duration-300
         flex flex-col               
-        ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        ${isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b shrink-0">
-      
+
           <h2 className="text-xl font-semibold">Your Cart</h2>
           <button onClick={() => setIsOpen(false)}>
             <X size={24} />
@@ -186,7 +194,11 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
           <div className="flex flex-col items-center justify-center flex-1">
             <h3 className="text-xl mb-6">Your cart is empty</h3>
             <button
-              onClick={() => setIsOpen(false)}
+              // onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);          // close cart
+                setIsCategoryOpen(true);     // open categories
+              }}
               className="bg-black text-white px-6 py-3"
             >
               Continue shopping
@@ -255,14 +267,14 @@ const CartSidebar = ({ isOpen, setIsOpen }) => {
 
             {/* Footer */}
             <div className="p-6 border-t shrink-0 bg-white">
-            
+
               <div className="flex justify-between mb-4 font-semibold">
                 <span>Subtotal</span>
                 <span>PKR {getSubtotal()}</span>
               </div>
 
-              <button onClick={()=>{
-                window.location.href="/checkout"
+              <button onClick={() => {
+                window.location.href = "/checkout"
               }} className="w-full bg-black text-white py-3">
                 Checkout
               </button>

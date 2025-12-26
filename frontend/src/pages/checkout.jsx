@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, MapPin, CreditCard, Lock } from 'lucide-react';
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { clearCart } from "../redux/cartslice";
 
 export default function CheckoutPage() {
     const cartItems = useSelector((state) => state.cart.items);
     const navigate = useNavigate();
     const location = useLocation();
     const API_BASE_URL =  import.meta.env.VITE_API_URL;
-
-
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
-    //     const role = localStorage.getItem('role');
-    //     if (!token || role !== 'admin') {
-    //         // navigate('/login');
-    //         navigate("/login", { state: { from: location.pathname } });
-
-    //     }
-    // }, [navigate, location.pathname]);
+    const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -147,6 +138,7 @@ export default function CheckoutPage() {
             if (response.ok) {
                 alert("Order placed successfully!");
                 console.log(data.order);
+                 dispatch(clearCart());
                 navigate("/order-success"); // optional success page
             } else {
                 alert(data.message || "Order failed");

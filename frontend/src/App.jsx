@@ -171,7 +171,7 @@ function AppContent() {
       {/* Show Navbar only if NOT admin */}
       {!isAdminRoute && <Navbar />}
 
-      <main className={!isAdminRoute ? "pt-28 md:pt-32" : ""}>
+      <main className={!isAdminRoute ? "pt-28 md:pt-42" : ""}>
         <Routes>
           <Route path='/' element={<Home />} />
           
