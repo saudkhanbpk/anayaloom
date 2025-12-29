@@ -37,14 +37,17 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign(
       {
         id: user._id,
-        role: user.role, // 👈 IMPORTANT
+        role: user.role, 
+        email: user.email,
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
+    console.log(email ,"this is the email");
 
     res.status(200).json({
       message: "Login successful",
+      email: user.email,
       token,
       role:user.role,
     });
