@@ -12,10 +12,13 @@
 //   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 //   const [isSearchOpen, setIsSearchOpen] = useState(false);
 //   const [topCategories, setTopCategories] = useState([]);
+//   const [suggestions, setSuggestions] = useState([]);
+//   const [loading, setLoading] = useState(false);
 //   const navigate = useNavigate();
 
 //   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+//   // ✅ Fixed: Separate useEffect for fetching top categories
 //   useEffect(() => {
 //     const fetchTopCategories = async () => {
 //       try {
@@ -30,24 +33,63 @@
 //     };
 
 //     fetchTopCategories();
-//   }, []);
+//   }, [API_BASE_URL]);
+
+//   // ✅ Fixed: Separate useEffect for search suggestions
+//   useEffect(() => {
+//     if (!searchQuery.trim()) {
+//       setSuggestions([]);
+//       return;
+//     }
+
+//     const delay = setTimeout(async () => {
+//       try {
+//         setLoading(true);
+//         const res = await axios.get(`${API_BASE_URL}/search`, {
+//           params: { query: searchQuery }
+//         });
+
+
+//         setSuggestions([
+//           ...res.data.categories.map(c => ({ ...c, type: "category" })),
+//           ...res.data.products.map(p => ({ ...p, type: "product" }))
+//         ]);
+//       } catch (err) {
+//         console.error("Search error", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     }, 300); // debounce
+
+//     return () => clearTimeout(delay);
+//   }, [searchQuery, API_BASE_URL]); // ✅ Added API_BASE_URL dependency
 
 //   const handleSearch = (e) => {
 //     e.preventDefault();
-//     console.log('Searching for:', searchQuery);
+
+//     if (suggestions.length > 0) {
+//       const first = suggestions[0];
+
+//       if (first.type === "category") {
+//         navigate(`/collection/${first._id}`);
+//       } else {
+//         navigate(`/collection/${first.category.parent?._id || first.category._id}`);
+//       }
+//     }
+
 //     setIsSearchOpen(false);
 //   };
 
 //   const handlelogout = () => {
 //     const role = localStorage.getItem('role');
-//     if(!role){
+//     if (!role) {
 //       navigate("/login");
 //       return;
-//     }else{
-//     localStorage.removeItem('token');
-//     localStorage.removeItem('role');
-//     alert(`the ${role} logged out successfully`);
-//   }
+//     } else {
+//       localStorage.removeItem('token');
+//       localStorage.removeItem('role');
+//       alert(`the ${role} logged out successfully`);
+//     }
 //   };
 
 //   return (
@@ -58,7 +100,7 @@
 //       <div className="bg-brown-900" style={{ backgroundColor: '#3d2817' }}>
 //         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
 //           <div className="flex items-center justify-between h-24 sm:h-28 md:h-32">
-            
+
 //             {/* Left Section - Menu Button & Logo */}
 //             <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
 //               <button
@@ -68,7 +110,7 @@
 //               >
 //                 <Menu size={24} className="sm:w-6 sm:h-6" />
 //               </button>
-              
+
 //               <button
 //                 onClick={() => navigate('/')}
 //                 className="bg-transparent border-0 cursor-pointer"
@@ -85,19 +127,87 @@
 //             {/* Right Section - Icons */}
 //             <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
 //               {/* Desktop Search */}
-//               <form onSubmit={handleSearch} className="relative hidden md:block">
+//               <div className="relative hidden md:block">
 //                 <input
 //                   type="text"
 //                   value={searchQuery}
 //                   onChange={(e) => setSearchQuery(e.target.value)}
 //                   placeholder="Search..."
-//                   className="pl-10 pr-4 py-2 bg-white bg-opacity-20 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:bg-opacity-30 w-48 lg:w-64 placeholder-gray-300"
+//                   className="pl-10 pr-4 py-2  bg-opacity-20 text-white rounded-full w-64"
 //                 />
-//                 <Search
-//                   size={20}
-//                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300"
-//                 />
-//               </form>
+//                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" />
+
+//                 {/* Suggestions */}
+//                 {suggestions.length > 0 && (
+//                   <div className="absolute top-full left-0 w-full bg-white rounded shadow-lg z-50 max-h-64 overflow-y-auto">
+//                     {/* {suggestions.map(item => (
+//                       <div
+//                         key={item._id}
+//                         // onClick={() => {
+//                         //   setSearchQuery("");
+//                         //   setSuggestions([]);
+
+//                         //   if (item.type === "category") {
+//                         //     navigate(`/collection/${item._id}`);
+//                         //   } else {
+//                         //     navigate(`/collection/${item.category.parent?._id || item.category._id}`);
+//                         //   }
+//                         // }}
+//                         onClick={() => {
+//                           setSearchQuery("");
+//                           setSuggestions([]);
+
+//                           if (item.type === "category") {
+//                             navigate(`/collection/${item._id}`);
+//                           } else {
+//                             const parentId =
+//                               item.category.parent?._id || item.category._id;
+
+//                             navigate(
+//                               `/collection/${parentId}?highlight=${item._id}`
+//                             );
+//                           }
+//                         }}
+
+//                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+//                       > */}
+
+//                     {suggestions.map(item => (
+//                       <div
+//                         key={item._id}
+//                         onClick={() => {
+//                           setSearchQuery("");
+//                           setSuggestions([]);
+
+//                           if (item.type === "category") {
+//                             // Category click
+//                             navigate(`/collection/${item._id}`);
+//                           } else {
+//                             // Product click (SAFE)
+//                             let parentId;
+
+//                             if (item.category?.parent?._id) {
+//                               parentId = item.category.parent._id;
+//                             } else {
+//                               console.error("Parent category missing for product", item);
+//                               return;
+//                             }
+
+//                             navigate(`/collection/${parentId}?highlight=${item._id}`);
+//                           }
+//                         }}
+//                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+//                       >
+
+//                         <span className="font-medium">{item.name}</span>
+//                         <span className="text-xs text-gray-500 ml-2">
+//                           ({item.type})
+//                         </span>
+//                       </div>
+//                     ))}
+//                   </div>
+//                 )}
+//               </div>
 
 //               {/* Mobile Search Toggle */}
 //               <button
@@ -170,7 +280,7 @@
 //                 {cat.name}
 //               </button>
 //             ))}
-            
+
 //             {/* Mobile Logout */}
 //             <button
 //               onClick={handlelogout}
@@ -191,6 +301,7 @@
 // export default Navbar;
 
 
+
 import React, { useState, useEffect } from 'react';
 import { Menu, Search, User, ShoppingBag, X } from 'lucide-react';
 import CartSidebar from './cart.jsx';
@@ -205,13 +316,29 @@ const Navbar = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [topCategories, setTopCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]); // optional: for getParentCategoryId
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-  // ✅ Fixed: Separate useEffect for fetching top categories
+  // Helper function to get parent category ID safely
+  const getParentCategoryId = (product, categories) => {
+    if (!product.category) return null;
+
+    // Find category object by _id if product.category is string
+    const categoryObj =
+      typeof product.category === "string"
+        ? categories.find((c) => c._id === product.category)
+        : product.category;
+
+    if (!categoryObj) return null;
+
+    // Return parent ID if exists, else category's own ID
+    return categoryObj.parent?._id || categoryObj._id;
+  };
+
+  // Fetch top categories (main navbar)
   useEffect(() => {
     const fetchTopCategories = async () => {
       try {
@@ -220,15 +347,15 @@ const Navbar = () => {
           cat.name === "Kids Corner" || cat.name === "Dupatta Gallery"
         );
         setTopCategories(parents);
+        setSubCategories(res.data); // keep all categories for parent lookup
       } catch (error) {
-        console.error("Error fetching top categories", error);
+        console.error("Error fetching categories", error);
       }
     };
-
     fetchTopCategories();
   }, [API_BASE_URL]);
 
-  // ✅ Fixed: Separate useEffect for search suggestions
+  // Fetch search suggestions
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSuggestions([]);
@@ -238,9 +365,9 @@ const Navbar = () => {
     const delay = setTimeout(async () => {
       try {
         setLoading(true);
-        const res = await axios.get(
-          `${API_BASE_URL}/search/${searchQuery}`
-        );
+        const res = await axios.get(`${API_BASE_URL}/search`, {
+          params: { query: searchQuery }
+        });
 
         setSuggestions([
           ...res.data.categories.map(c => ({ ...c, type: "category" })),
@@ -251,37 +378,39 @@ const Navbar = () => {
       } finally {
         setLoading(false);
       }
-    }, 300); // debounce
+    }, 300);
 
     return () => clearTimeout(delay);
-  }, [searchQuery, API_BASE_URL]); // ✅ Added API_BASE_URL dependency
+  }, [searchQuery, API_BASE_URL]);
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (suggestions.length === 0) return;
 
-    if (suggestions.length > 0) {
-      const first = suggestions[0];
-
-      if (first.type === "category") {
-        navigate(`/collection/${first._id}`);
-      } else {
-        navigate(`/collection/${first.category.parent?._id || first.category._id}`);
+    const first = suggestions[0];
+    if (first.type === "category") {
+      navigate(`/collection/${first._id}`);
+    } else {
+      const parentId = getParentCategoryId(first, subCategories.concat(topCategories));
+      if (!parentId) {
+        console.error("Cannot find parent category for product", first);
+        return;
       }
+      navigate(`/collection/${parentId}?highlight=${first._id}`);
     }
 
     setIsSearchOpen(false);
   };
 
-  const handlelogout = () => {
+  const handleLogout = () => {
     const role = localStorage.getItem('role');
     if (!role) {
       navigate("/login");
       return;
-    } else {
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      alert(`the ${role} logged out successfully`);
     }
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    alert(`The ${role} logged out successfully`);
   };
 
   return (
@@ -293,7 +422,7 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex items-center justify-between h-24 sm:h-28 md:h-32">
 
-            {/* Left Section - Menu Button & Logo */}
+            {/* Left Section */}
             <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
               <button
                 onClick={() => setIsCategoryOpen(true)}
@@ -316,7 +445,7 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Right Section - Icons */}
+            {/* Right Section */}
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
               {/* Desktop Search */}
               <div className="relative hidden md:block">
@@ -325,32 +454,30 @@ const Navbar = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search..."
-                  className="pl-10 pr-4 py-2  bg-opacity-20 text-white rounded-full w-64"
+                  className="pl-10 pr-4 py-2 bg-opacity-20 text-white rounded-full w-64"
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" />
 
-                {/* Suggestions */}
                 {suggestions.length > 0 && (
                   <div className="absolute top-full left-0 w-full bg-white rounded shadow-lg z-50 max-h-64 overflow-y-auto">
                     {suggestions.map(item => (
                       <div
                         key={item._id}
                         onClick={() => {
-                          setSearchQuery("");
+                          setSearchQuery('');
                           setSuggestions([]);
-
                           if (item.type === "category") {
                             navigate(`/collection/${item._id}`);
                           } else {
-                            navigate(`/collection/${item.category.parent?._id || item.category._id}`);
+                            const parentId = getParentCategoryId(item, subCategories.concat(topCategories));
+                            if (!parentId) return;
+                            navigate(`/collection/${parentId}?highlight=${item._id}`);
                           }
                         }}
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                       >
                         <span className="font-medium">{item.name}</span>
-                        <span className="text-xs text-gray-500 ml-2">
-                          ({item.type})
-                        </span>
+                        <span className="text-xs text-gray-500 ml-2">({item.type})</span>
                       </div>
                     ))}
                   </div>
@@ -382,9 +509,8 @@ const Navbar = () => {
                 <ShoppingBag size={20} className="sm:w-5 sm:h-5 md:w-6 md:h-6" />
               </button>
 
-              {/* Logout - Hidden on small screens */}
               <button
-                onClick={handlelogout}
+                onClick={handleLogout}
                 className='hidden sm:block text-gray-100 border border-white px-2 py-1 md:px-3 md:py-1.5 rounded-lg text-xs md:text-sm hover:bg-white hover:text-brown-900 transition-colors'
               >
                 Logout
@@ -431,7 +557,7 @@ const Navbar = () => {
 
             {/* Mobile Logout */}
             <button
-              onClick={handlelogout}
+              onClick={handleLogout}
               className='sm:hidden text-white text-xs font-semibold uppercase tracking-wide hover:text-gray-300 transition-colors bg-transparent border-0'
               style={{ fontFamily: 'Roboto Slab, serif' }}
             >

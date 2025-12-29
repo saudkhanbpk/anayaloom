@@ -27,8 +27,13 @@ const Home = () => {
       // Group products by category and pick last one of each category
       const grouped = res.data.reduce((acc, product) => {
         // const catId = product.category._id ;
-        const catId = product.category.parent?._id
+        // const catId = product.category.parent?._id
+        const catId = product?.category?.parent?._id || 
+                    product?.category?._id || 
+                    'uncategorized';
+                    
         console.log(catId, "this si ");
+
         if (!acc[catId] || new Date(product.createdAt) > new Date(acc[catId].createdAt)) {
           acc[catId] = product;
         }
