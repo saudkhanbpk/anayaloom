@@ -265,7 +265,7 @@ export default function CheckoutPage() {
                         {/* Payment */}
                         <div className="mb-8">
                             <h2 className="text-xl font-semibold mb-2">Payment</h2>
-                            <p className="text-sm text-gray-600 mb-4">All transactions are secure and encrypted.</p>
+                            {/* <p className="text-sm text-gray-600 mb-4">All transactions are secure and encrypted.</p> */}
 
                             <label className="flex items-center p-4 border-2 border-gray-300 rounded-t-md cursor-pointer hover:bg-gray-50 transition-colors"
                                 style={{
@@ -283,7 +283,7 @@ export default function CheckoutPage() {
                                 <span className="ml-3 font-medium">Cash on Delivery (COD)</span>
                             </label>
 
-                            <label className="flex items-center justify-between p-4 border-2 border-t-0 border-gray-300 rounded-b-md cursor-pointer hover:bg-gray-50 transition-colors"
+                            {/* <label className="flex items-center justify-between p-4 border-2 border-t-0 border-gray-300 rounded-b-md cursor-pointer hover:bg-gray-50 transition-colors"
                                 style={{
                                     borderColor: formData.paymentMethod === 'card' ? '#3B82F6' : '#D1D5DB',
                                     backgroundColor: formData.paymentMethod === 'card' ? '#EFF6FF' : 'white'
@@ -303,10 +303,10 @@ export default function CheckoutPage() {
                                     <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded">VISA</span>
                                     <span className="text-xs bg-red-600 text-white px-2 py-1 rounded">MC</span>
                                 </div>
-                            </label>
+                            </label> */}
 
                             {/* Card Details Form - Shows when card payment is selected */}
-                            {formData.paymentMethod === 'card' && (
+                            {/* {formData.paymentMethod === 'card' && (
                                 <div className="mt-4 p-4 border-2 border-blue-200 rounded-md bg-blue-50 space-y-4 animate-fadeIn">
                                     <div className="flex items-center gap-2 text-blue-700 mb-3">
                                         <Lock className="w-4 h-4" />
@@ -384,7 +384,7 @@ export default function CheckoutPage() {
                                         </p>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         <button

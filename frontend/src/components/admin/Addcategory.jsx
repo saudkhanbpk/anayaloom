@@ -432,7 +432,7 @@ const AddCategory = ({ setCurrentPage }) => {
           )}
 
           {/* Description */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium mb-1">
               Description
             </label>
@@ -442,7 +442,7 @@ const AddCategory = ({ setCurrentPage }) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-          </div>
+          </div> */}
 
           {/* Status */}
           <div>

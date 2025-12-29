@@ -138,12 +138,12 @@ const CategoryProductsPage = () => {
           {products.map((product) => (
             <div
               key={product._id}
-              className="border rounded-lg bg-gray-300 shadow-sm"
+              className="border shadow-sm"
             >
               <img
                 src={product.images?.[0]}
                 alt={product.name}
-                className="h-64 w-full object-contain"
+                className=" w-full object-cover"
               />
               <div className="p-4">
                 <h2 className="text-sm font-medium truncate">{product.name}</h2>
