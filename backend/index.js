@@ -8,6 +8,7 @@ import authRoutes from "./routes/authroutes.js";
 import categoryRoutes from "./routes/categoryroutes.js"
 import productRoutes from "./routes/productroutes.js"; 
 import orderRoutes from "./routes/orderroutes.js"
+import searchRoutes from "./routes/searchroute.js"
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,6 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/search", searchRoutes);
 
 
 const PORT = process.env.PORT;
