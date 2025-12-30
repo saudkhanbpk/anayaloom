@@ -84,9 +84,9 @@ const CategorySidebar = ({ isOpen, setIsOpen }) => {
           <div className="p-6 border-b">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-bold text-lg">SHOP BY CATEGORIES</h3>
-              <button className="text-sm font-semibold text-gray-600 hover:text-black">
+              {/* <button className="text-sm font-semibold text-gray-600 hover:text-black">
                 VIEW ALL
-              </button>
+              </button> */}
             </div>
             {/* <div className="space-y-1">
               {categories.slice(6).map((category, index) => (

@@ -19,11 +19,9 @@ const LoginPage = () => {
         { email, password }
       );
       
-     console.log(res.data ,"this is reponse data")
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role",res.data.role);
       localStorage.setItem("email",res.data.email);
-      console.log(res.data ,"this is reponse data   .........")
       
       alert("Login successful");
 

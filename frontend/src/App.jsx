@@ -77,6 +77,7 @@ import AdminDashboard from './pages/admin/admin';
 import OTPVerification from './pages/otp';
 import ForgotPassword from './pages/forgetpassword';
 import CategoryProductsPage from "./pages/CategoryProductsPage";
+import OrderSuccessPage from './pages/order-sucess';
 
 // Protected Admin Route Component
 const AdminRoute = ({ children }) => {
@@ -189,6 +190,7 @@ function AppContent() {
           <Route path='/women' element={<WomenProducts />} />
           <Route path='/juniors' element={<JuniorsProducts />} />
           <Route path="/collection/:slug" element={<CategoryProductsPage />} />
+          <Route path='/order-sucess' element={<OrderSuccessPage />} />
           
           {/* Checkout - requires login */}
           <Route path='/checkout' element={

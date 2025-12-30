@@ -31,9 +31,6 @@ const Home = () => {
         const catId = product?.category?.parent?._id || 
                     product?.category?._id || 
                     'uncategorized';
-                    
-        console.log(catId, "this si ");
-
         if (!acc[catId] || new Date(product.createdAt) > new Date(acc[catId].createdAt)) {
           acc[catId] = product;
         }
@@ -79,7 +76,7 @@ const Home = () => {
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto py-16 px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">Shop by Category</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {categories.map((cat) => (
             <div
               key={cat._id}
@@ -95,7 +92,7 @@ const Home = () => {
       {/* Latest Products Section */}
       <section className="max-w-7xl mx-auto py-16 px-4 bg-white">
         <h2 className="text-3xl font-bold mb-8 text-center">Latest Products</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {latestProducts.map((product) => (
             <div
               key={product._id}

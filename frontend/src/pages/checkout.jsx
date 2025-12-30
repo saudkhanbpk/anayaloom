@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, MapPin, CreditCard, Lock } from 'lucide-react';
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { clearCart } from "../redux/cartslice";
 
@@ -8,7 +8,7 @@ export default function CheckoutPage() {
     const cartItems = useSelector((state) => state.cart.items);
     const navigate = useNavigate();
     const location = useLocation();
-    const API_BASE_URL =  import.meta.env.VITE_API_URL;
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
@@ -136,10 +136,12 @@ export default function CheckoutPage() {
 
             const data = await response.json();
             if (response.ok) {
-                alert("Order placed successfully!");
-                console.log(data.order);
-                 dispatch(clearCart());
-                navigate("/order-success"); // optional success page
+                dispatch(clearCart());
+                navigate("/order-sucess", {
+                    state: {
+                        order: data.order
+                    }
+                });
             } else {
                 alert(data.message || "Order failed");
             }

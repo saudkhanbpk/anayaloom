@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Package,
@@ -10,7 +10,10 @@ import {
   Menu,
   X,
   Plus,
+  ChevronDown,
+  User,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import AddCategory from '../../components/admin/Addcategory';
 import Categories from '../../components/admin/categroy';
 import AddProduct from '../../components/admin/AddProduct';
@@ -21,7 +24,40 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [editProduct, setEditProduct] = useState(null);
+  const [userEmail, setUserEmail] = useState('');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+  // Get email from localStorage when component mounts
+  const userData = localStorage.getItem('email');
+ 
+  
+  if (userData) {
+    try {
+      let email = '';
+      if (userData.startsWith('{')) {
+        const parsedUser = JSON.parse(userData);
+        email = parsedUser.email || '';
+      } else {
+        email = userData;
+      }
+      setUserEmail(email);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      setUserEmail(userData);
+    }
+  }
+}, []);
+
+  const handleLogout = () => {
+    
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    navigate('/');
+    
+  };
 
   const menuItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
@@ -66,34 +102,6 @@ export default function AdminDashboard() {
     </div>
   );
 
-  //  const Orders = () => (
-  //   <div className="space-y-6">
-  //     <h2 className="text-2xl font-bold">Orders</h2>
-  //     <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
-  //       <table className="w-full">
-  //         <thead className="bg-gray-50">
-  //           <tr>
-  //             <th className="px-4 py-3 text-left text-sm font-semibold">Order ID</th>
-  //             <th className="px-4 py-3 text-left text-sm font-semibold">Customer</th>
-  //             <th className="px-4 py-3 text-left text-sm font-semibold">Total</th>
-  //             <th className="px-4 py-3 text-left text-sm font-semibold">Status</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody className="divide-y divide-gray-200">
-  //           {orders.map(order => (
-  //             <tr key={order.id} className="hover:bg-gray-50">
-  //               <td className="px-4 py-3 text-sm">#{order.id}</td>
-  //               <td className="px-4 py-3 text-sm">{order.customer}</td>
-  //               <td className="px-4 py-3 text-sm">PKR {order.total}</td>
-  //               <td className="px-4 py-3"><span className="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">{order.status}</span></td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // );
-
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard': return <Dashboard />;
@@ -105,6 +113,14 @@ export default function AdminDashboard() {
       case 'orders': return <Orders />;
       default: return <Dashboard />;
     }
+  };
+
+  // Get first letter for avatar
+  const getAvatarLetter = () => {
+    if (userEmail) {
+      return userEmail.charAt(0).toUpperCase();
+    }
+    return 'A'; // Default
   };
 
   return (
@@ -124,8 +140,7 @@ export default function AdminDashboard() {
                 key={item.id}
                 onClick={() => {
                   setCurrentPage(item.id);
-                  // CRITICAL FIX: Reset edit state when navigating via sidebar
-                  setEditProduct(null); 
+                  setEditProduct(null);
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${currentPage === item.id ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}
               >
@@ -139,8 +154,54 @@ export default function AdminDashboard() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-sm p-4 flex justify-between items-center">
           <h2 className="text-2xl font-semibold text-gray-800 capitalize">{currentPage.replace('-', ' ')}</h2>
-          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">A</div>
+          <div className="relative">
+            <button 
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded-lg transition-colors"
+            >
+              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                {getAvatarLetter()}
+              </div>
+              <ChevronDown className={`w-5 h-5 text-gray-600 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {/* Dropdown Menu */}
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                <div className="p-4 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Admin Account</p>
+                      <p className="text-sm text-gray-500 truncate">{userEmail || 'No email found'}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-2">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </header>
+        
+        {/* Click outside to close dropdown */}
+        {dropdownOpen && (
+          <div 
+            className="fixed inset-0 z-40" 
+            onClick={() => setDropdownOpen(false)}
+          />
+        )}
+        
         <main className="flex-1 overflow-y-auto p-6">{renderPage()}</main>
       </div>
     </div>
