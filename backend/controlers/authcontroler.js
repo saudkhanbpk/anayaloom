@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-    console.log(email ,"this is the email");
+    
 
     res.status(200).json({
       message: "Login successful",
